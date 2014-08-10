@@ -23,4 +23,10 @@ module Enumerable
 		end
 		return self
 	end
+
+	def my_select
+		#Return an enumerable object if no block is given
+		retrun enum_for(:my_select) unless block_given?
+	end
+
 end

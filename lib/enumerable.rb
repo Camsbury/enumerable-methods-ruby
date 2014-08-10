@@ -54,4 +54,59 @@ module Enumerable
 		end
 	end
 
+	def my_all?
+		#Ensures input is an array or hash
+		raise TypeError unless (self.is_a? Array)||(self.is_a? Hash)
+		#Return an enumerable object if no block is given
+		return enum_for(:my_all?) unless block_given?
+		if self.is_a?(Array)
+			selected = self.my_select do |element|
+				yield(element)
+			end
+			compare=self==selected
+			return compare
+		elsif self.is_a?(Hash)
+			selected = self.my_select do |key,value|
+				yield(key,value)
+			end
+			compare=self==selected
+			return compare
+		end
+	end
+
+	def my_any?
+		#Ensures input is an array or hash
+		raise TypeError unless (self.is_a? Array)||(self.is_a? Hash)
+		#Return an enumerable object if no block is given
+		return enum_for(:my_any?) unless block_given?
+		if self.is_a?(Array)
+			selected = self.my_select do |element|
+				yield(element)
+			end
+			return selected.length>0
+		elsif self.is_a?(Hash)
+			selected = self.my_select do |key,value|
+				yield(key,value)
+			end
+			return selected.length>0
+		end
+	end
+
+	def my_none?
+		#Ensures input is an array or hash
+		raise TypeError unless (self.is_a? Array)||(self.is_a? Hash)
+		#Return an enumerable object if no block is given
+		return enum_for(:my_none?) unless block_given?
+		if self.is_a?(Array)
+			selected = self.my_select do |element|
+				yield(element)
+			end
+			return selected.length==0
+		elsif self.is_a?(Hash)
+			selected = self.my_select do |key,value|
+				yield(key,value)
+			end
+			return selected.length==0
+		end
+	end
 end

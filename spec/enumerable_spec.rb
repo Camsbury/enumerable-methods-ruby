@@ -22,4 +22,25 @@ describe "create enumerables" do
 	it "select hash greater than 5" do
 		expect({thing: 1, "bob" => 2, 3 => 3, ["woah",5] => 4, 435 => 5, 234 => 6, 2324 =>7}.my_select {|key,value| value>5}).to eq({thing: 1, "bob" => 2, 3 => 3, ["woah",5] => 4, 435 => 5, 234 => 6, 2324 =>7}.select {|key,value| value>5})
 	end
+	#my_all?
+	it "select array greater than 5" do
+		expect([1,2,3,4,5,6,7,8,9,10].my_all? {|i| i>5}).to eq([1,2,3,4,5,6,7,8,9,10].all? {|i| i>5})
+	end
+	it "select hash greater than 5" do
+		expect({thing: 1, "bob" => 2, 3 => 3, ["woah",5] => 4, 435 => 5, 234 => 6, 2324 =>7}.my_all? {|key,value| value>5}).to eq({thing: 1, "bob" => 2, 3 => 3, ["woah",5] => 4, 435 => 5, 234 => 6, 2324 =>7}.all? {|key,value| value>5})
+	end
+	#my_any?
+	it "select array greater than 5" do
+		expect([1,2,3,4,5,6,7,8,9,10].my_any? {|i| i>5}).to eq([1,2,3,4,5,6,7,8,9,10].any? {|i| i>5})
+	end
+	it "select hash greater than 5" do
+		expect({thing: 1, "bob" => 2, 3 => 3, ["woah",5] => 4, 435 => 5, 234 => 6, 2324 =>7}.my_any? {|key,value| value>5}).to eq({thing: 1, "bob" => 2, 3 => 3, ["woah",5] => 4, 435 => 5, 234 => 6, 2324 =>7}.any? {|key,value| value>5})
+	end
+	#my_none?
+	it "select array greater than 5" do
+		expect([1,2,3,4,5,6,7,8,9,10].my_none? {|i| i>5}).to eq([1,2,3,4,5,6,7,8,9,10].none? {|i| i>5})
+	end
+	it "select hash greater than 5" do
+		expect({thing: 1, "bob" => 2, 3 => 3, ["woah",5] => 4, 435 => 5, 234 => 6, 2324 =>7}.my_none? {|key,value| value>5}).to eq({thing: 1, "bob" => 2, 3 => 3, ["woah",5] => 4, 435 => 5, 234 => 6, 2324 =>7}.none? {|key,value| value>5})
+	end
 end

@@ -9,7 +9,7 @@ module Enumerable
 			for i in 0...self.length
 				yield(self[i])
 			end
-		elsif self.is_a?(Hash)
+		else
 			for i in 0...self.keys.length
 				key = self.keys[i]
 				yield(key,self[key])
@@ -44,7 +44,7 @@ module Enumerable
 				selected<<element if check
 			end
 			return selected
-		elsif self.is_a?(Hash)
+		else
 			selected={}
 			self.my_each do |key,value|
 				check=yield(key,value)
@@ -65,7 +65,7 @@ module Enumerable
 			end
 			compare=self==selected
 			return compare
-		elsif self.is_a?(Hash)
+		else
 			selected = self.my_select do |key,value|
 				yield(key,value)
 			end
@@ -84,7 +84,7 @@ module Enumerable
 				yield(element)
 			end
 			return selected.length>0
-		elsif self.is_a?(Hash)
+		else
 			selected = self.my_select do |key,value|
 				yield(key,value)
 			end
@@ -102,11 +102,76 @@ module Enumerable
 				yield(element)
 			end
 			return selected.length==0
-		elsif self.is_a?(Hash)
+		else
 			selected = self.my_select do |key,value|
 				yield(key,value)
 			end
 			return selected.length==0
 		end
 	end
+
+	def my_count
+		#Ensures input is an array or hash
+		raise TypeError unless (self.is_a? Array)||(self.is_a? Hash)
+		unless block_given?
+			return self.length
+		else
+			if self.is_a? Array
+				selected=self.my_select do |element|
+					yield(element)
+				end
+				return selected.length
+			else
+				selected=self.my_select do |key,value|
+					yield(key,value)
+				end
+				return selected.length
+			end
+		end
+	end
+
+	def my_map
+		#Ensures input is an array or hash
+		raise TypeError unless (self.is_a? Array)||(self.is_a? Hash)
+		#Return an enumerable object if no block is given
+		return enum_for(:my_map) unless block_given?
+		if self.is_a?(Array)
+			selected=[]
+			self.my_each do |element|
+				selected<<yield(element)
+			end
+			return selected
+		else
+			selected=[]
+			self.my_each do |key,value|
+				selected<<yield(key,value)
+			end
+			return selected
+		end
+	end
+
+	def my_inject(*args)
+		#Ensures input is an array or hash
+		raise TypeError unless (self.is_a? Array)||(self.is_a? Hash)
+		if args.length==0
+			array=self.to_a
+			base=array[0]
+			array[1..-1].my_each do |element|
+				base=yield(base,element)
+			end
+			return base
+		else
+			array=self.to_a
+			base=args[0]
+			array[0..-1].my_each do |element|
+				base=yield(base,element)
+			end
+			return base
+		end
+	end
+end
+
+
+def multiply_els(array)
+	array.my_inject {|base,element| base*element}
 end

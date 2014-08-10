@@ -130,21 +130,33 @@ module Enumerable
 		end
 	end
 
-	def my_map
+	def my_map(in_proc)
 		#Ensures input is an array or hash
 		raise TypeError unless (self.is_a? Array)||(self.is_a? Hash)
-		#Return an enumerable object if no block is given
-		return enum_for(:my_map) unless block_given?
 		if self.is_a?(Array)
 			selected=[]
 			self.my_each do |element|
-				selected<<yield(element)
+				selected<<in_proc.call(element)
+			end
+			if block_given?	
+				selected2=[]
+				selected.my_each do |element|
+					selected2<<yield(element)
+				end
+				return selected2
 			end
 			return selected
 		else
 			selected=[]
 			self.my_each do |key,value|
-				selected<<yield(key,value)
+				selected<<in_proc.call(key,value)
+			end
+			if block_given?	
+				selected2=[]
+				selected.my_each do |element|
+					selected2<<yield(element)
+				end
+				return selected2
 			end
 			return selected
 		end

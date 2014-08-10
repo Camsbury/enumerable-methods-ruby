@@ -5,15 +5,10 @@ module Enumerable
 		return enum_for(:my_each) unless block_given?
 		#Ensure hashes are accepted by converting to arrays
 		array=self.to_a
-		hashed=false
-		if self.is_a?(Hash)
-			hashed=true
-		end
 		#performs main loop
 		for i in 0...array.length
-			yield(self[i])
+			yield(array[i])
 		end
-		return self.to_a if hashed==false
 		return self
 	end
 
@@ -22,14 +17,10 @@ module Enumerable
 		return enum_for(:my_each_with_index) unless block_given?
 		#Ensure hashes are accepted by converting to arrays
 		array=self.to_a
-		hashed=false
-		if self.is_a?(Hash)
-			hashed=true
-		end
+		#performs main loop
 		for i in 0...array.length
-			yield(self[i],i)
+			yield(array[i],i)
 		end
-		return self.to_a if hashed==false
 		return self
 	end
 end
